@@ -1,0 +1,40 @@
+//INVALID
+
+A,1,,2,T // Type should be either 'R' or 'W'
+K,2,,1,T // Type should be either 'R' or 'W'
+
+R,-1,,4,T // negative adress
+R,0xFFFFFFFFFFFF,,4,T   // adress is larger than 2^32-1
+R,1,3,4,T   // data was specified in a read request
+R,1,,1234,T  // user is too large
+R,1,,-1,T  // user is a negative number
+R,1,,2,A  // Wide is a letter other than 'T' or 'F'
+
+W,1,,3,T // No data was specified for a write-request
+W,12,256,2,F // Data larger than 255 was specified for 1 byte write request
+
+
+,R,1,,3,T // request starts with ','
+R,,,1,T // No adress is specified
+R,1,,,3,T // Too many commas
+
+
+R,a,,4,T // any-request which contains a non-integer value in adress,data or user column
+1,,4,T  // any-request which has a missing column
+R,1,,3,T,1 //any request having more columns than 5
+
+
+//INVALID
+
+//VALID
+
+W   ,64,    0xFFFFFFFF,77,T
+W ,68,0xAAAAAAAA , 78,T
+        R,64,,77,T
+R,68,,78,T
+
+R,65,,77    ,T          
+ R, 68 ,     , 77 , F
+R ,64, ,78,F
+
+//VALID
